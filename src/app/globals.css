@@ -18,12 +18,57 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+}
+
+/* Prevent zoom on form inputs on iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select, textarea, input[type="text"], input[type="password"], 
+  input[type="datetime"], input[type="datetime-local"], 
+  input[type="date"], input[type="month"], input[type="time"], 
+  input[type="week"], input[type="number"], input[type="email"], 
+  input[type="url"], input[type="search"], input[type="tel"], 
+  input[type="color"] {
+    font-size: 16px !important;
+  }
 }
 
 /* Leaflet CSS fixes */
 .leaflet-container {
   height: 100%;
   width: 100%;
+  font-size: 14px;
+}
+
+/* Leaflet mobile touch handling */
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 2px solid rgba(0,0,0,0.2);
+}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  box-shadow: none;
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+  .leaflet-touch .leaflet-bar a {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+  }
+  
+  .leaflet-container {
+    font-size: 12px;
+  }
 }
 
 /* Ant Design Layout adjustments */
@@ -76,16 +121,138 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .ant-layout-sider {
-    position: absolute !important;
-    z-index: 1000;
-    height: 100vh !important;
-    right: -400px;
-    transition: right 0.3s ease;
+  /* Hide timeline marks on mobile for cleaner look */
+  .timeline-marks {
+    display: none;
   }
   
-  .ant-layout-sider.mobile-open {
-    right: 0;
+  /* Adjust header padding */
+  .ant-layout-header {
+    padding: 8px 16px !important;
+  }
+  
+  /* Make cards more compact on mobile */
+  .ant-card-body {
+    padding: 8px 12px;
+  }
+  
+  .ant-card-head {
+    padding: 0 12px;
+    min-height: 40px;
+  }
+  
+  .ant-card-head-title {
+    padding: 8px 0;
+    font-size: 12px;
+  }
+  
+  /* Adjust timeline slider for mobile */
+  .ant-slider {
+    margin: 8px 4px;
+  }
+  
+  /* Mobile map controls */
+  .leaflet-control-zoom {
+    margin-right: 8px !important;
+    margin-top: 8px !important;
+  }
+  
+  /* Mobile drawer styles */
+  .ant-drawer-body {
+    padding: 0;
+  }
+  
+  /* Compact form inputs on mobile */
+  .ant-form-item {
+    margin-bottom: 8px;
+  }
+  
+  .ant-form-item-label {
+    padding: 0 0 2px;
+  }
+  
+  .ant-form-item-label > label {
+    font-size: 11px;
+  }
+  
+  /* Responsive text sizes */
+  .ant-typography h4 {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  
+  .ant-typography h5 {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  /* Mobile-specific button adjustments */
+  .ant-btn-sm {
+    padding: 2px 6px;
+    font-size: 11px;
+    height: 24px;
+  }
+  
+  /* Mobile select and input adjustments */
+  .ant-select-sm {
+    font-size: 11px;
+  }
+  
+  .ant-input-number-sm {
+    font-size: 11px;
+  }
+  
+  /* Mobile list items */
+  .ant-list-item {
+    padding: 8px 0;
+  }
+  
+  /* Adjust spacing for mobile */
+  .space-y-4 > * + * {
+    margin-top: 12px;
+  }
+  
+  .space-y-3 > * + * {
+    margin-top: 8px;
+  }
+  
+  .space-y-2 > * + * {
+    margin-top: 6px;
+  }
+  
+  .space-y-1 > * + * {
+    margin-top: 4px;
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .ant-layout-sider {
+    width: 320px !important;
+  }
+}
+
+/* Touch-friendly adjustments for mobile */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  .ant-btn {
+    min-height: 32px;
+    padding: 4px 12px;
+  }
+  
+  /* Better spacing for touch */
+  .ant-space-item {
+    margin-right: 12px;
+  }
+  
+  /* Responsive range slider */
+  .react-range-track {
+    height: 6px;
+  }
+  
+  .react-range-thumb {
+    width: 20px;
+    height: 20px;
   }
 }
 

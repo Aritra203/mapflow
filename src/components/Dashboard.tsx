@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { Layout, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Layout, message, Button, Drawer } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import { TimelineSlider } from './TimelineSlider';
 import { MapComponent } from './MapComponent';
 import { Sidebar } from './Sidebar';
@@ -11,6 +12,9 @@ import { WeatherService } from '@/services/weatherService';
 const { Header, Content, Sider } = Layout;
 
 export const Dashboard: React.FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
   const {
     polygons,
     timeline,
@@ -19,6 +23,18 @@ export const Dashboard: React.FC = () => {
     updatePolygon,
     getPolygonCurrentValue,
   } = useDashboardStore();
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Update polygon colors when timeline or data changes
   useEffect(() => {
@@ -100,9 +116,19 @@ export const Dashboard: React.FC = () => {
   return (
     <Layout className="h-screen">
       {/* Header with Timeline */}
-      <Header className="bg-white border-b border-gray-200 h-auto p-4">
-        <div className="max-w-full">
-          <TimelineSlider />
+      <Header className="bg-white border-b border-gray-200 h-auto p-2 md:p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex-1 mr-2 md:mr-4">
+            <TimelineSlider />
+          </div>
+          {isMobile && (
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="flex-shrink-0"
+            />
+          )}
         </div>
       </Header>
 
@@ -112,14 +138,32 @@ export const Dashboard: React.FC = () => {
           <MapComponent />
         </Content>
 
-        {/* Sidebar */}
-        <Sider
-          width={400}
-          className="bg-white border-l border-gray-200"
-          theme="light"
-        >
-          <Sidebar />
-        </Sider>
+        {/* Desktop Sidebar */}
+        {!isMobile && (
+          <Sider
+            width={400}
+            className="bg-white border-l border-gray-200"
+            theme="light"
+          >
+            <Sidebar />
+          </Sider>
+        )}
+
+        {/* Mobile Sidebar Drawer */}
+        {isMobile && (
+          <Drawer
+            title="Controls"
+            placement="right"
+            onClose={() => setIsMobileMenuOpen(false)}
+            open={isMobileMenuOpen}
+            width="90%"
+            styles={{
+              body: { padding: 0 },
+            }}
+          >
+            <Sidebar />
+          </Drawer>
+        )}
       </Layout>
     </Layout>
   );

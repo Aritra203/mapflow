@@ -91,24 +91,26 @@ const PolygonDrawer: React.FC<PolygonDrawerProps> = ({
           }}
         />
         {isDrawing && (
-          <div className="absolute top-4 left-4 z-[1000] bg-white p-3 rounded-lg shadow-lg">
-            <div className="space-y-2">
-              <Text strong>Drawing Polygon</Text>
+          <div className="absolute top-2 left-2 md:top-4 md:left-4 z-[1000] bg-white p-2 md:p-3 rounded-lg shadow-lg">
+            <div className="space-y-1 md:space-y-2">
+              <Text strong className="text-xs md:text-sm">Drawing Polygon</Text>
               <div>
-                <Text>Points: {points.length}/12</Text>
+                <Text className="text-xs md:text-sm">Points: {points.length}/12</Text>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1 md:gap-2">
                 <Button
                   size="small"
                   type="primary"
                   onClick={() => handleComplete()}
                   disabled={points.length < 3}
+                  className="text-xs md:text-sm"
                 >
                   Complete
                 </Button>
                 <Button
                   size="small"
                   onClick={handleCancel}
+                  className="text-xs md:text-sm"
                 >
                   Cancel
                 </Button>
@@ -199,23 +201,25 @@ const PolygonEditor: React.FC<PolygonEditorProps> = ({
       ))}
 
       {/* Editing controls */}
-      <div className="absolute top-4 left-4 z-[1000] bg-white p-3 rounded-lg shadow-lg">
-        <div className="space-y-2">
-          <Typography.Text strong>Editing Polygon</Typography.Text>
+      <div className="absolute top-2 left-2 md:top-4 md:left-4 z-[1000] bg-white p-2 md:p-3 rounded-lg shadow-lg">
+        <div className="space-y-1 md:space-y-2">
+          <Typography.Text strong className="text-xs md:text-sm">Editing Polygon</Typography.Text>
           <div>
-            <Typography.Text>Drag vertices to reshape polygon</Typography.Text>
+            <Typography.Text className="text-xs md:text-sm">Drag vertices to reshape polygon</Typography.Text>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1 md:gap-2">
             <Button
               size="small"
               type="primary"
               onClick={handleFinishEditing}
+              className="text-xs md:text-sm"
             >
               Save Changes
             </Button>
             <Button
               size="small"
               onClick={handleCancelEditing}
+              className="text-xs md:text-sm"
             >
               Cancel
             </Button>
@@ -240,24 +244,28 @@ const MapControls: React.FC<MapControlsProps> = ({ onStartDrawing, isDrawing, is
   };
 
   return (
-    <div className="absolute top-4 right-4 z-[1000] space-y-2">
+    <div className="absolute top-2 right-2 md:top-4 md:right-4 z-[1000] space-y-2">
       <Button
         type="primary"
         icon={<PlusOutlined />}
         onClick={onStartDrawing}
         disabled={isDrawing || isEditing}
-        className="block w-full"
+        className="block w-full text-xs md:text-sm"
+        size="small"
         title={isEditing ? "Finish editing to draw new polygon" : "Draw a new polygon"}
       >
-        Draw Polygon
+        <span className="hidden sm:inline">Draw Polygon</span>
+        <span className="sm:hidden">Draw</span>
       </Button>
       <Button
         onClick={handleResetView}
-        className="block w-full"
+        className="block w-full text-xs md:text-sm"
+        size="small"
         disabled={isDrawing || isEditing}
         title="Reset map view to default location"
       >
-        Reset View
+        <span className="hidden sm:inline">Reset View</span>
+        <span className="sm:hidden">Reset</span>
       </Button>
     </div>
   );
@@ -549,7 +557,7 @@ export const MapComponent: React.FC = () => {
 
       {/* Selected polygon info */}
       {selectedPolygonId && !editingPolygonId && (
-        <div className="absolute bottom-4 left-4 z-[1000] bg-white p-4 rounded-lg shadow-lg max-w-sm">
+        <div className="absolute bottom-2 left-2 md:bottom-4 md:left-4 z-[1000] bg-white p-2 md:p-4 rounded-lg shadow-lg max-w-xs md:max-w-sm">
           {(() => {
             const polygon = polygons.find(p => p.id === selectedPolygonId);
             if (!polygon) return null;
@@ -558,10 +566,10 @@ export const MapComponent: React.FC = () => {
             const currentValue = getPolygonCurrentValue(polygon.id);
 
             return (
-              <div className="space-y-2">
+              <div className="space-y-1 md:space-y-2">
                 <div className="flex items-center justify-between">
                   {renamingPolygonId === polygon.id ? (
-                    <div className="flex items-center gap-2 flex-1">
+                    <div className="flex items-center gap-1 md:gap-2 flex-1">
                       <Input
                         value={newPolygonName}
                         onChange={(e) => setNewPolygonName(e.target.value)}
@@ -569,7 +577,7 @@ export const MapComponent: React.FC = () => {
                         onBlur={handleFinishRenaming}
                         autoFocus
                         size="small"
-                        className="flex-1"
+                        className="flex-1 text-xs md:text-sm"
                       />
                       <Button
                         type="text"
@@ -589,7 +597,7 @@ export const MapComponent: React.FC = () => {
                   ) : (
                     <Text 
                       strong 
-                      className="cursor-pointer hover:text-blue-600"
+                      className="cursor-pointer hover:text-blue-600 text-xs md:text-sm"
                       onClick={() => handleStartRenaming(polygon.id, polygon.name || '')}
                       title="Click to rename"
                     >
@@ -617,16 +625,16 @@ export const MapComponent: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <Text>Data Source: {dataSource?.name}</Text>
+                  <Text className="text-xs md:text-sm">Data Source: {dataSource?.name}</Text>
                 </div>
                 <div>
-                  <Text>Current Value: </Text>
-                  <Text strong>
+                  <Text className="text-xs md:text-sm">Current Value: </Text>
+                  <Text strong className="text-xs md:text-sm">
                     {currentValue !== null ? `${currentValue.toFixed(1)}°C` : 'Loading...'}
                   </Text>
                 </div>
                 <div>
-                  <Text>Points: {polygon.points.length}</Text>
+                  <Text className="text-xs md:text-sm">Points: {polygon.points.length}</Text>
                 </div>
               </div>
             );

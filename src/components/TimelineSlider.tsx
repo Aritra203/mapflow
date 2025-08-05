@@ -89,17 +89,18 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
 
   return (
     <Card className={`${className} shadow-sm`}>
-      <div className="space-y-4">
+      <div className="space-y-2 md:space-y-4">
         {/* Header with mode toggle */}
-        <div className="flex items-center justify-between">
-          <Title level={4} className="m-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <Title level={4} className="m-0 text-sm md:text-base">
             Timeline Control
           </Title>
-          <div className="flex gap-2">
+          <div className="flex gap-1 md:gap-2">
             <Button
               size="small"
               type={timeline.mode === 'single' ? 'primary' : 'default'}
               onClick={() => setTimelineMode('single')}
+              className="text-xs md:text-sm"
             >
               Single Point
             </Button>
@@ -107,6 +108,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
               size="small"
               type={timeline.mode === 'range' ? 'primary' : 'default'}
               onClick={() => setTimelineMode('range')}
+              className="text-xs md:text-sm"
             >
               Time Range
             </Button>
@@ -114,24 +116,24 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
         </div>
 
         {/* Current selection display */}
-        <div className="bg-gray-50 p-3 rounded-lg">
+        <div className="bg-gray-50 p-2 md:p-3 rounded-lg">
           {timeline.mode === 'single' ? (
             <div>
-              <Text strong>Selected Time: </Text>
-              <Text>{formatHourDisplay(timeline.selectedHour)}</Text>
+              <Text strong className="text-xs md:text-sm">Selected Time: </Text>
+              <Text className="text-xs md:text-sm">{formatHourDisplay(timeline.selectedHour)}</Text>
             </div>
           ) : (
             <div>
-              <Text strong>Selected Range: </Text>
+              <Text strong className="text-xs md:text-sm">Selected Range: </Text>
               <div className="space-y-1">
                 <div>
-                  <Text>From: {formatHourDisplay(timeline.selectedRange[0])}</Text>
+                  <Text className="text-xs md:text-sm">From: {formatHourDisplay(timeline.selectedRange[0])}</Text>
                 </div>
                 <div>
-                  <Text>To: {formatHourDisplay(timeline.selectedRange[1])}</Text>
+                  <Text className="text-xs md:text-sm">To: {formatHourDisplay(timeline.selectedRange[1])}</Text>
                 </div>
                 <div>
-                  <Text type="secondary">
+                  <Text type="secondary" className="text-xs">
                     Duration: {timeline.selectedRange[1] - timeline.selectedRange[0] + 1} hours
                   </Text>
                 </div>
@@ -141,7 +143,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
         </div>
 
         {/* Slider */}
-        <div className="relative py-8">
+        <div className="relative py-4 md:py-8">
           <Range
             values={timeline.mode === 'single' 
               ? [timeline.selectedHour] 
@@ -161,14 +163,14 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
             renderThumb={renderThumb}
           />
           
-          {/* Time marks */}
-          <div className="relative mt-2">
+          {/* Time marks - hidden on mobile for cleaner look */}
+          <div className="relative mt-2 hidden md:block">
             {Array.from({ length: 31 }, (_, i) => i * 24).map(renderMark)}
           </div>
         </div>
 
         {/* Quick selection buttons */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1 md:gap-2">
           <Tooltip title="Go to current time">
             <Button
               size="small"
@@ -180,6 +182,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
                   setSelectedRange([currentHour - 12, currentHour + 12]);
                 }
               }}
+              className="text-xs md:text-sm"
             >
               Now
             </Button>
@@ -194,6 +197,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
                     const current = timeline.selectedRange[1];
                     setSelectedRange([Math.max(0, current - 23), current]);
                   }}
+                  className="text-xs md:text-sm"
                 >
                   Last 24h
                 </Button>
@@ -206,6 +210,7 @@ export const TimelineSlider: React.FC<TimelineSliderProps> = ({ className }) => 
                     const current = timeline.selectedRange[1];
                     setSelectedRange([Math.max(0, current - 167), current]); // 7 * 24 - 1
                   }}
+                  className="text-xs md:text-sm"
                 >
                   Last Week
                 </Button>

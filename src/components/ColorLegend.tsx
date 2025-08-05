@@ -47,25 +47,25 @@ export const ColorLegend: React.FC = () => {
   return (
     <Card
       size="small"
-      className="absolute top-4 left-1/2 transform -translate-x-1/2 z-[1000] max-w-sm"
+      className="absolute top-2 left-1/2 transform -translate-x-1/2 z-[1000] max-w-xs md:max-w-sm"
       title={
         <div className="text-center">
-          <Title level={5} className="mb-1">Color Legend</Title>
-          <Text type="secondary">{currentDataSource.name}</Text>
+          <Title level={5} className="mb-1 text-xs md:text-sm">Color Legend</Title>
+          <Text type="secondary" className="text-xs md:text-sm">{currentDataSource.name}</Text>
         </div>
       }
     >
-      <div className="space-y-2">
+      <div className="space-y-1 md:space-y-2">
         {currentDataSource.colorRules
           .sort((a, b) => a.value - b.value)
           .map((rule) => (
             <div key={rule.id} className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 md:gap-2">
                 <div
-                  className="w-4 h-4 rounded"
+                  className="w-3 h-3 md:w-4 md:h-4 rounded"
                   style={{ backgroundColor: rule.color }}
                 />
-                <Text className="text-sm">
+                <Text className="text-xs md:text-sm">
                   {getOperatorText(rule.operator)} {rule.value}{getUnitText(currentDataSource.field)}
                 </Text>
               </div>
@@ -73,13 +73,13 @@ export const ColorLegend: React.FC = () => {
           ))}
         
         {/* Default color */}
-        <div className="flex items-center justify-between border-t pt-2">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between border-t pt-1 md:pt-2">
+          <div className="flex items-center gap-1 md:gap-2">
             <div
-              className="w-4 h-4 rounded"
+              className="w-3 h-3 md:w-4 md:h-4 rounded"
               style={{ backgroundColor: '#94a3b8' }}
             />
-            <Text className="text-sm" type="secondary">
+            <Text className="text-xs md:text-sm" type="secondary">
               No rules match
             </Text>
           </div>
@@ -87,7 +87,7 @@ export const ColorLegend: React.FC = () => {
       </div>
       
       {selectedPolygon && (
-        <div className="mt-3 pt-2 border-t">
+        <div className="mt-2 md:mt-3 pt-1 md:pt-2 border-t">
           <Text className="text-xs" type="secondary">
             Legend for: {selectedPolygon.name || 'Selected Polygon'}
           </Text>

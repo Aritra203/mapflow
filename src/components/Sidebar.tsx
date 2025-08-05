@@ -59,11 +59,11 @@ const ColorRuleItem: React.FC<ColorRuleItemProps> = ({ rule, onUpdate, onDelete 
 
   if (isEditing) {
     return (
-      <Card size="small" className="mb-2">
+      <Card size="small" className="mb-1 md:mb-2">
         <Form form={editForm} layout="vertical">
-          <div className="grid grid-cols-2 gap-2">
-            <Form.Item name="operator" label="Operator" className="mb-2">
-              <Select>
+          <div className="grid grid-cols-2 gap-1 md:gap-2">
+            <Form.Item name="operator" label="Operator" className="mb-1 md:mb-2">
+              <Select size="small">
                 <Option value="=">=</Option>
                 <Option value="<">&lt;</Option>
                 <Option value=">">&gt;</Option>
@@ -71,24 +71,25 @@ const ColorRuleItem: React.FC<ColorRuleItemProps> = ({ rule, onUpdate, onDelete 
                 <Option value=">=">&ge;</Option>
               </Select>
             </Form.Item>
-            <Form.Item name="value" label="Value" className="mb-2">
-              <InputNumber className="w-full" />
+            <Form.Item name="value" label="Value" className="mb-1 md:mb-2">
+              <InputNumber className="w-full" size="small" />
             </Form.Item>
           </div>
-          <Form.Item name="color" label="Color" className="mb-2">
+          <Form.Item name="color" label="Color" className="mb-1 md:mb-2">
             <ColorPicker
               showText
               format="hex"
+              size="small"
               onChange={(color) => {
                 editForm.setFieldValue('color', color.toHexString());
               }}
             />
           </Form.Item>
-          <div className="flex gap-2">
-            <Button type="primary" size="small" onClick={handleSave}>
+          <div className="flex gap-1 md:gap-2">
+            <Button type="primary" size="small" onClick={handleSave} className="text-xs md:text-sm">
               Save
             </Button>
-            <Button size="small" onClick={handleCancel}>
+            <Button size="small" onClick={handleCancel} className="text-xs md:text-sm">
               Cancel
             </Button>
           </div>
@@ -98,14 +99,14 @@ const ColorRuleItem: React.FC<ColorRuleItemProps> = ({ rule, onUpdate, onDelete 
   }
 
   return (
-    <Card size="small" className="mb-2">
+    <Card size="small" className="mb-1 md:mb-2">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
           <div
-            className="w-4 h-4 rounded"
+            className="w-3 h-3 md:w-4 md:h-4 rounded"
             style={{ backgroundColor: rule.color }}
           />
-          <Text>
+          <Text className="text-xs md:text-sm">
             {rule.operator} {rule.value}
           </Text>
         </div>
@@ -174,12 +175,12 @@ const DataSourceCard: React.FC<DataSourceCardProps> = ({ dataSource, onUpdate, i
   return (
     <Card
       size="small"
-      className="mb-4"
+      className="mb-2 md:mb-4"
       title={
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Text strong>{dataSource.name}</Text>
-            {isUsed && <Tag color="green">In Use</Tag>}
+          <div className="flex items-center gap-1 md:gap-2">
+            <Text strong className="text-xs md:text-sm">{dataSource.name}</Text>
+            {isUsed && <Tag color="green" className="text-xs">In Use</Tag>}
           </div>
           <Button
             type="text"
@@ -190,30 +191,31 @@ const DataSourceCard: React.FC<DataSourceCardProps> = ({ dataSource, onUpdate, i
         </div>
       }
     >
-      <div className="space-y-2">
+      <div className="space-y-1 md:space-y-2">
         <div>
-          <Text type="secondary">Field: </Text>
-          <Text code>{dataSource.field}</Text>
+          <Text type="secondary" className="text-xs md:text-sm">Field: </Text>
+          <Text code className="text-xs md:text-sm">{dataSource.field}</Text>
         </div>
 
         {isExpanded && (
           <>
-            <Divider className="my-3" />
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Text strong>Color Rules</Text>
+            <Divider className="my-2 md:my-3" />
+            <div className="space-y-1 md:space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <Text strong className="text-xs md:text-sm">Color Rules</Text>
                 <Button
                   type="dashed"
                   size="small"
                   icon={<PlusOutlined />}
                   onClick={handleAddRule}
+                  className="text-xs md:text-sm"
                 >
                   Add Rule
                 </Button>
               </div>
 
               {dataSource.colorRules.length === 0 ? (
-                <Text type="secondary">No color rules defined</Text>
+                <Text type="secondary" className="text-xs md:text-sm">No color rules defined</Text>
               ) : (
                 dataSource.colorRules.map(rule => (
                   <ColorRuleItem
@@ -342,12 +344,12 @@ export const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="h-full bg-gray-50 p-4 overflow-y-auto">
-      <div className="space-y-6">
+    <div className="h-full bg-gray-50 p-2 md:p-4 overflow-y-auto">
+      <div className="space-y-4 md:space-y-6">
         {/* Data Sources Section */}
         <Card>
-          <div className="flex items-center justify-between mb-4">
-            <Title level={4} className="m-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 md:mb-4 gap-2">
+            <Title level={4} className="m-0 text-sm md:text-base">
               Data Sources
             </Title>
             <Button
@@ -355,40 +357,44 @@ export const Sidebar: React.FC = () => {
               size="small"
               icon={<PlusOutlined />}
               onClick={() => setShowNewDataSourceModal(true)}
+              className="text-xs md:text-sm"
             >
               Add Source
             </Button>
           </div>
 
-          {dataSources.map(dataSource => (
-            <DataSourceCard
-              key={dataSource.id}
-              dataSource={dataSource}
-              onUpdate={(updates) => handleUpdateDataSource(dataSource.id, updates)}
-              isUsed={getDataSourceUsage(dataSource.id) > 0}
-            />
-          ))}
+          <div className="space-y-2">
+            {dataSources.map(dataSource => (
+              <DataSourceCard
+                key={dataSource.id}
+                dataSource={dataSource}
+                onUpdate={(updates) => handleUpdateDataSource(dataSource.id, updates)}
+                isUsed={getDataSourceUsage(dataSource.id) > 0}
+              />
+            ))}
+          </div>
         </Card>
 
         {/* Selected Polygon Configuration */}
         {selectedPolygon && (
           <Card>
-            <Title level={4} className="mb-4">
+            <Title level={4} className="mb-3 md:mb-4 text-sm md:text-base">
               Polygon Configuration
             </Title>
             
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div>
-                <Text strong>Name: </Text>
-                <Text>{selectedPolygon.name || 'Unnamed Polygon'}</Text>
+                <Text strong className="text-xs md:text-sm">Name: </Text>
+                <Text className="text-xs md:text-sm">{selectedPolygon.name || 'Unnamed Polygon'}</Text>
               </div>
 
               <div>
-                <Text strong className="block mb-2">Data Source:</Text>
+                <Text strong className="block mb-2 text-xs md:text-sm">Data Source:</Text>
                 <Select
                   value={selectedPolygon.dataSourceId}
                   onChange={handlePolygonDataSourceChange}
                   className="w-full"
+                  size="small"
                 >
                   {dataSources.map(ds => (
                     <Option key={ds.id} value={ds.id}>
@@ -399,13 +405,13 @@ export const Sidebar: React.FC = () => {
               </div>
 
               <div>
-                <Text strong>Points: </Text>
-                <Text>{selectedPolygon.points.length}</Text>
+                <Text strong className="text-xs md:text-sm">Points: </Text>
+                <Text className="text-xs md:text-sm">{selectedPolygon.points.length}</Text>
               </div>
 
               <div>
-                <Text strong>Centroid: </Text>
-                <Text code>
+                <Text strong className="text-xs md:text-sm">Centroid: </Text>
+                <Text code className="text-xs">
                   {selectedPolygon.centroid[0].toFixed(4)}, {selectedPolygon.centroid[1].toFixed(4)}
                 </Text>
               </div>
@@ -415,12 +421,14 @@ export const Sidebar: React.FC = () => {
 
         {/* Polygon List */}
         <Card>
-          <Title level={4} className="mb-4">
+          <Title level={4} className="mb-3 md:mb-4 text-sm md:text-base">
             Polygons ({polygons.length})
           </Title>
           
           {polygons.length === 0 ? (
-            <Text type="secondary">No polygons created yet. Draw polygons on the map to get started.</Text>
+            <Text type="secondary" className="text-xs md:text-sm">
+              No polygons created yet. Draw polygons on the map to get started.
+            </Text>
           ) : (
             <List
               size="small"
@@ -438,13 +446,15 @@ export const Sidebar: React.FC = () => {
                   >
                     <div className="w-full">
                       <div className="flex items-center justify-between">
-                        <Text strong>{polygon.name || 'Unnamed Polygon'}</Text>
+                        <Text strong className="text-xs md:text-sm">
+                          {polygon.name || 'Unnamed Polygon'}
+                        </Text>
                         <div
-                          className="w-4 h-4 rounded"
+                          className="w-3 h-3 md:w-4 md:h-4 rounded"
                           style={{ backgroundColor: polygon.color }}
                         />
                       </div>
-                      <Text type="secondary" className="text-sm">
+                      <Text type="secondary" className="text-xs">
                         {dataSource?.name} • {polygon.points.length} points
                       </Text>
                     </div>
